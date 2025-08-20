@@ -2,6 +2,8 @@
 
 This project used stm32 which counts time tick and switches eight-segment display also stm32 get pressure and temperature from bme280 sensor.
 
+---
+
 #### Some explanations on the code
 
 In main.c file:
@@ -19,5 +21,7 @@ Init all pins connected to eight-segment display:
 ```c
 disp_seg_pins_t display = {...}
 ```
+
+---
 
 ##### For more information view file main.c
