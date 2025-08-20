@@ -1,0 +1,55 @@
+{
+    "configurations": [
+        {
+            "name": "Cortex Debug ST-Util",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "stutil",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/${workspaceFolderBasename}.elf",
+            "preLaunchTask": "Make: Build",
+            "interface": "swd",
+            "preRestartCommands": [
+                "load",
+                "enable breakpoint",
+                "monitor reset"
+            ],
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "raw",
+            "device": "STM32F103C6T6A",
+            "svdFile": "${workspaceFolder}/STM32F103.svd",
+        },
+        {
+            "name": "Openocd debug",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "runToEntryPoint": "main",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/${workspaceFolderBasename}.elf",
+            "preLaunchCommands": ["monitor arm semihosting enable"],
+            "preLaunchTask": "Make: Build",
+            "interface": "swd",
+            "configFiles": [
+                "interface/stlink.cfg",
+				"target/stm32f1x.cfg",
+            ],
+            "svdFile": "${workspaceFolder}/STM32F103.svd",
+            "swoConfig": {
+                "enabled": true,
+                "cpuFrequency": 64000000,
+                "swoFrequency": 2000000,
+                "source": "probe",
+                "decoders": [
+                    { 
+                        "type": "console",
+                        "label": "output",
+                        "port": 0,
+                        "showOnStartup": true,
+                        "encoding": "utf8"
+                    }
+                ]
+            }
+        }
+    ],
+}

@@ -1,0 +1,83 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+      "label": "Make: Build",
+      "type": "shell",
+      "group": "build",
+      "command": "make",
+      "args": [
+        "-j4"
+      ],
+      "problemMatcher": [],
+       "detail": "Builds project in Debug mode.",
+    },
+    {
+      "type": "shell",
+      "label": "Build & flash",
+      "command": "st-flash",
+      "args": [
+        "--reset",
+        "write",
+        "${fileWorkspaceFolder}/build/${workspaceFolderBasename}.bin",
+        "0x8000000"
+      ],
+      "options": {
+        "cwd": "${fileWorkspaceFolder}/build"
+      },
+      "dependsOn": "Make: Build",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Builds project and flashes firmware.",
+      "options": {
+        "statusbar": {"hide": false}
+      }
+    },
+    {
+      "type": "shell",
+      "label": "Erase",
+      "command": "st-flash",
+      "args": [
+        "--connect-under-reset",
+        "erase"
+      ],
+      "detail": "Mass erase of chip",
+      "options": {
+        "statusbar": {"hide": false}
+      }
+    },
+    {
+      "type": "shell",
+      "label": "Flash-openocd",
+      "command": "openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c 'program ${fileWorkspaceFolder}/build/${workspaceFolderBasename}.bin 0x8000000 verify reset exit' ",
+      "dependsOn": "Make: Build",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Builds project, connects to the openOCD server and flashes new firmware.",
+      "options": {
+        "statusbar": {"hide": true}
+      }
+    },
+    {
+      "type": "shell",
+      "label": "stm32flash",
+      "command": "stm32flash -b 57600 -w ${fileWorkspaceFolder}/build/${workspaceFolderBasename}.bin -v -g 0x0 /dev/cu.usbserial-110",
+      "dependsOn": "Make: Build",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Builds project, flashes new firmware using uart.",
+      "options": {
+        "statusbar": {"label": "Build & flash-uart"}
+      }
+    }   
+	]
+}
